@@ -573,7 +573,11 @@ def _com_github_nlohmann_json():
     )
 
 def _com_github_alibaba_hessian2_codec():
-    external_http_archive("com_github_alibaba_hessian2_codec")
+    external_http_archive(
+        name = "com_github_alibaba_hessian2_codec",
+        patches = ["@envoy//bazel/foreign_cc:hessian2.patch"],
+        patch_args = ["-p1"],
+    )
 
 def _com_github_ncopa_suexec():
     external_http_archive(
