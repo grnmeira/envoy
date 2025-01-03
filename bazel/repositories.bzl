@@ -369,6 +369,8 @@ def _com_github_intel_ipp_crypto_crypto_mb():
     external_http_archive(
         name = "com_github_intel_ipp_crypto_crypto_mb",
         build_file_content = BUILD_ALL_CONTENT,
+        patches = ["@envoy//bazel/foreign_cc:ipp-crypto-clang-18.patch"],
+        patch_args = ["-p1"],
     )
 
 def _com_github_intel_ipp_crypto_crypto_mb_fips():
@@ -377,7 +379,10 @@ def _com_github_intel_ipp_crypto_crypto_mb_fips():
     # when upstream dependency fixes this issue.
     external_http_archive(
         name = "com_github_intel_ipp_crypto_crypto_mb_fips",
-        patches = ["@envoy//bazel/foreign_cc:ipp-crypto-bn2lebinpad.patch"],
+        patches = [
+            "@envoy//bazel/foreign_cc:ipp-crypto-bn2lebinpad.patch",
+	    "@envoy//bazel/foreign_cc:ipp-crypto-clang-18.patch",
+        ],
         patch_args = ["-p1"],
         build_file_content = BUILD_ALL_CONTENT,
         # Use existing ipp-crypto repository location name to avoid redefinition.

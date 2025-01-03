@@ -1,0 +1,126 @@
+diff --git a/sources/ippcp/crypto_mb/include/crypto_mb/defs.h b/sources/ippcp/crypto_mb/include/crypto_mb/defs.h
+index 085376a..b9bb014 100644
+--- a/sources/ippcp/crypto_mb/include/crypto_mb/defs.h
++++ b/sources/ippcp/crypto_mb/include/crypto_mb/defs.h
+@@ -23,6 +23,8 @@ typedef unsigned short int16u;
+ typedef unsigned int  int32u;
+ typedef unsigned long long int64u;
+ 
++#endif
++
+ #ifndef NULL
+    #define NULL ((void *)0)
+ #endif
+@@ -63,5 +65,3 @@ typedef unsigned long long int64u;
+ #else
+    #define EXTERN_C
+ #endif
+-
+-#endif /* DEFS_H */
+diff --git a/sources/ippcp/crypto_mb/include/crypto_mb/sm4_ccm.h b/sources/ippcp/crypto_mb/include/crypto_mb/sm4_ccm.h
+index 980f948..8567e34 100644
+--- a/sources/ippcp/crypto_mb/include/crypto_mb/sm4_ccm.h
++++ b/sources/ippcp/crypto_mb/include/crypto_mb/sm4_ccm.h
+@@ -20,6 +20,7 @@
+ #include <crypto_mb/sm4.h>
+ 
+ #include <immintrin.h>
++#include <crypto_mb/defs.h>
+ 
+ #define MIN_CCM_IV_LENGTH 7
+ #define MAX_CCM_IV_LENGTH 13
+diff --git a/sources/ippcp/crypto_mb/include/crypto_mb/sm4_gcm.h b/sources/ippcp/crypto_mb/include/crypto_mb/sm4_gcm.h
+index fd8205d..834dc46 100644
+--- a/sources/ippcp/crypto_mb/include/crypto_mb/sm4_gcm.h
++++ b/sources/ippcp/crypto_mb/include/crypto_mb/sm4_gcm.h
+@@ -20,6 +20,7 @@
+ #include <crypto_mb/sm4.h>
+ 
+ #include <immintrin.h>
++#include <crypto_mb/defs.h>
+ 
+ #define SM4_GCM_CONTEXT_BUFFER_SLOT_TYPE int64u
+ 
+diff --git a/sources/ippcp/crypto_mb/include/internal/common/ifma_math.h b/sources/ippcp/crypto_mb/include/internal/common/ifma_math.h
+index 19b966b..267f000 100644
+--- a/sources/ippcp/crypto_mb/include/internal/common/ifma_math.h
++++ b/sources/ippcp/crypto_mb/include/internal/common/ifma_math.h
+@@ -24,6 +24,7 @@
+         #pragma warning(disable:177)
+     #endif
+     #include <immintrin.h>
++    #include <crypto_mb/defs.h>
+     #include <internal/common/ifma_defs.h>
+ 
+     #if (SIMD_LEN == 512)
+diff --git a/sources/ippcp/crypto_mb/include/internal/sm3/sm3_common.h b/sources/ippcp/crypto_mb/include/internal/sm3/sm3_common.h
+index 1dbe59f..bd2aef0 100644
+--- a/sources/ippcp/crypto_mb/include/internal/sm3/sm3_common.h
++++ b/sources/ippcp/crypto_mb/include/internal/sm3/sm3_common.h
+@@ -17,11 +17,10 @@
+ #if !defined(_SM3_COMMON_H)
+ #define _SM3_COMMON_H
+ 
++#include <immintrin.h>
+ #include <crypto_mb/defs.h>
+ #include <crypto_mb/sm3.h>
+ 
+-#include <immintrin.h>
+-
+ #define SM3_MSG_LEN_REPR        (sizeof(int64u))               /* size of processed message length representation (bytes) */
+ 
+ #ifndef M256
+diff --git a/sources/ippcp/crypto_mb/include/internal/sm4/sm4_mb.h b/sources/ippcp/crypto_mb/include/internal/sm4/sm4_mb.h
+index 99cd25a..dc6fe21 100644
+--- a/sources/ippcp/crypto_mb/include/internal/sm4/sm4_mb.h
++++ b/sources/ippcp/crypto_mb/include/internal/sm4/sm4_mb.h
+@@ -17,11 +17,11 @@
+ #if !defined(_SM4_GFNI_MB_H)
+ #define _SM4_GFNI_MB_H
+ 
++#include <immintrin.h>
++
+ #include <crypto_mb/defs.h>
+ #include <crypto_mb/sm4.h>
+ 
+-#include <immintrin.h>
+-
+ #ifndef M128
+ #define M128(mem)   (*((__m128i*)(mem)))
+ #endif
+diff --git a/sources/ippcp/ecnist/ifma_alias_avx512.h b/sources/ippcp/ecnist/ifma_alias_avx512.h
+index 9438eed..e330994 100644
+--- a/sources/ippcp/ecnist/ifma_alias_avx512.h
++++ b/sources/ippcp/ecnist/ifma_alias_avx512.h
+@@ -22,6 +22,7 @@
+ #if (_IPP32E >= _IPP32E_K1)
+ 
+ #include <immintrin.h>
++#include <crypto_mb/defs.h>
+ 
+ typedef __m512i m512;
+ typedef __mmask8 mask8;
+diff --git a/sources/ippcp/ecnist/ifma_alias_avx512vl.h b/sources/ippcp/ecnist/ifma_alias_avx512vl.h
+index 6a260c1..3c02ed2 100644
+--- a/sources/ippcp/ecnist/ifma_alias_avx512vl.h
++++ b/sources/ippcp/ecnist/ifma_alias_avx512vl.h
+@@ -22,6 +22,7 @@
+ #if (_IPP32E >= _IPP32E_K1)
+ 
+ #include <immintrin.h>
++#include <crypto_mb/defs.h>
+ 
+ typedef __m256i m256i;
+ typedef __mmask8 mask8;
+diff --git a/sources/ippcp/ifma_math_avx512vl.h b/sources/ippcp/ifma_math_avx512vl.h
+index c5c2642..58f2bb6 100644
+--- a/sources/ippcp/ifma_math_avx512vl.h
++++ b/sources/ippcp/ifma_math_avx512vl.h
+@@ -33,6 +33,7 @@
+ #endif
+ 
+ #include <immintrin.h>
++#include <crypto_mb/defs.h>
+ 
+ #ifndef SIMD_LEN
+ #define SIMD_LEN 256
