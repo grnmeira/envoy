@@ -92,8 +92,20 @@ index 32b26cbdc..a5e7a554c 100644
  cc_binary(
      name = "protoc_static",
      copts = COPTS,
+diff --git a/build_defs/cpp_opts.bzl b/build_defs/cpp_opts.bzl
+index d8646d1..9639d26 100644
+--- a/build_defs/cpp_opts.bzl
++++ b/build_defs/cpp_opts.bzl
+@@ -21,6 +21,7 @@ COPTS = select({
+         "-Woverloaded-virtual",
+         "-Wno-sign-compare",
+         "-Wno-nonnull",
++        "-Wno-deprecated-declarations",
+     ],
+ })
+ 
 diff --git a/protobuf.bzl b/protobuf.bzl
-index c8d32a604..5bd22e021 100644
+index c8d32a6..5bd22e0 100644
 --- a/protobuf.bzl
 +++ b/protobuf.bzl
 @@ -99,6 +99,10 @@ def _proto_gen_impl(ctx):
@@ -108,7 +120,7 @@ index c8d32a604..5bd22e021 100644
  
      import_flags = depset(direct = import_flags)
 diff --git a/python/google/protobuf/__init__.py b/python/google/protobuf/__init__.py
-index 2185c200b..e705cf6d8 100755
+index 2185c20..e705cf6 100755
 --- a/python/google/protobuf/__init__.py
 +++ b/python/google/protobuf/__init__.py
 @@ -8,3 +8,10 @@
@@ -123,7 +135,7 @@ index 2185c200b..e705cf6d8 100755
 +    except ImportError:
 +        __path__ = __import__('pkgutil').extend_path(__path__, __name__)
 diff --git a/src/google/protobuf/compiler/BUILD.bazel b/src/google/protobuf/compiler/BUILD.bazel
-index 5012ee793..edf9adc5f 100644
+index 5012ee7..edf9adc 100644
 --- a/src/google/protobuf/compiler/BUILD.bazel
 +++ b/src/google/protobuf/compiler/BUILD.bazel
 @@ -547,7 +547,7 @@ cc_library(
@@ -136,7 +148,7 @@ index 5012ee793..edf9adc5f 100644
          "//src/google/protobuf",
          "//src/google/protobuf:port",
 diff --git a/src/google/protobuf/io/BUILD.bazel b/src/google/protobuf/io/BUILD.bazel
-index 192fec3ab..5d12630eb 100644
+index 192fec3..5d12630 100644
 --- a/src/google/protobuf/io/BUILD.bazel
 +++ b/src/google/protobuf/io/BUILD.bazel
 @@ -159,7 +159,7 @@ cc_library(
@@ -149,7 +161,7 @@ index 192fec3ab..5d12630eb 100644
  )
  
 diff --git a/src/google/protobuf/map.cc b/src/google/protobuf/map.cc
-index 570b61bec..da6ceb99d 100644
+index 570b61b..da6ceb9 100644
 --- a/src/google/protobuf/map.cc
 +++ b/src/google/protobuf/map.cc
 @@ -116,7 +116,7 @@ void UntypedMapBase::ClearTable(const ClearInput input) {
@@ -162,7 +174,7 @@ index 570b61bec..da6ceb99d 100644
        for (map_index_t b = index_of_first_non_null_, end = num_buckets_;
             b < end; ++b) {
 diff --git a/src/google/protobuf/port_def.inc b/src/google/protobuf/port_def.inc
-index 56f995e45..123f936ac 100644
+index 56f995e..123f936 100644
 --- a/src/google/protobuf/port_def.inc
 +++ b/src/google/protobuf/port_def.inc
 @@ -835,7 +835,7 @@ static_assert(PROTOBUF_ABSL_MIN(20230125, 3),
@@ -185,7 +197,7 @@ index 56f995e45..123f936ac 100644
  #else
  #define PROTOBUF_DEBUG false
 diff --git a/upb/message/internal/accessors.h b/upb/message/internal/accessors.h
-index aae0fdc0a..01a874e4c 100644
+index aae0fdc..01a874e 100644
 --- a/upb/message/internal/accessors.h
 +++ b/upb/message/internal/accessors.h
 @@ -163,7 +163,7 @@ UPB_INLINE void UPB_PRIVATE(_upb_Message_SetPresence)(
@@ -207,7 +219,7 @@ index aae0fdc0a..01a874e4c 100644
    switch (UPB_PRIVATE(_upb_MiniTableField_GetRep)(f)) {
      case kUpb_FieldRep_1Byte:
 diff --git a/upb/port/def.inc b/upb/port/def.inc
-index 4c073b32f..cc63a28b5 100644
+index 4c073b3..cc63a28 100644
 --- a/upb/port/def.inc
 +++ b/upb/port/def.inc
 @@ -82,6 +82,12 @@ Error, UINTPTR_MAX is undefined
@@ -224,7 +236,7 @@ index 4c073b32f..cc63a28b5 100644
  #define UPB_API UPB_EXPORT
  #define UPB_API_INLINE UPB_EXPORT
 diff --git a/upb/port/undef.inc b/upb/port/undef.inc
-index f94e2764e..5e02a3627 100644
+index f94e276..5e02a36 100644
 --- a/upb/port/undef.inc
 +++ b/upb/port/undef.inc
 @@ -12,6 +12,7 @@
