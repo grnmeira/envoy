@@ -110,5 +110,53 @@ private:
 
 DECLARE_FACTORY(DnsClusterFactory);
 
+class DnsLoadBalancer: public LoadBalancer {
+public:
+  virtual ~DnsLoadBalancer() = default;
+  DnsLoadBalancer(LoadBalancerParams params) : params_(params) {}
+  virtual HostSelectionResponse chooseHost(LoadBalancerContext* context) override {
+    (void)context;
+    return HostSelectionResponse(nullptr);
+  }
+  virtual HostConstSharedPtr peekAnotherHost(LoadBalancerContext* context) override {
+    (void)context;
+    return nullptr;
+  }
+  virtual OptRef<Envoy::Http::ConnectionPool::ConnectionLifetimeCallbacks> lifetimeCallbacks() override {
+    return OptRef<Envoy::Http::ConnectionPool::ConnectionLifetimeCallbacks>();
+  }
+  virtual absl::optional<SelectedPoolAndConnection>
+  selectExistingConnection(LoadBalancerContext* context, const Host& host,
+                           std::vector<uint8_t>& hash_key) override {
+    (void)context;
+    (void)host;
+    (void)hash_key;
+    return absl::nullopt;
+  }
+private:
+  LoadBalancerParams params_;
+};
+
+class DnsLoadBalancerFactory: public LoadBalancerFactory {
+public:
+  DnsLoadBalancerFactory() = default;
+  virtual ~DnsLoadBalancerFactory() = default;
+  virtual LoadBalancerPtr create(LoadBalancerParams params) {
+    return std::make_unique<DnsLoadBalancer>(params);
+  };
+  virtual bool recreateOnHostChange() const { return true; }
+};
+
+class ThreadAwareDnsLoadBalancer : public ThreadAwareLoadBalancer {
+public:
+  virtual ~ThreadAwareDnsLoadBalancer() = default;
+  virtual LoadBalancerFactorySharedPtr factory() override { 
+    return std::make_shared<DnsLoadBalancerFactory>(); 
+  };
+  virtual absl::Status initialize() override {
+    return absl::OkStatus();
+  }
+};
+
 } // namespace Upstream
 } // namespace Envoy

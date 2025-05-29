@@ -30,7 +30,9 @@ DnsClusterFactory::createClusterWithConfig(
       DnsClusterImpl::create(cluster, proto_config, context, std::move(*dns_resolver_or_error));
 
   RETURN_IF_NOT_OK(cluster_or_error.status());
-  return std::make_pair(ClusterImplBaseSharedPtr(std::move(*cluster_or_error)), nullptr);
+
+  auto dns_lb = std::make_unique<ThreadAwareDnsLoadBalancer>();
+  return std::make_pair(ClusterImplBaseSharedPtr(std::move(*cluster_or_error)), std::move(dns_lb));
 }
 
 REGISTER_FACTORY(DnsClusterFactory, ClusterFactory);
